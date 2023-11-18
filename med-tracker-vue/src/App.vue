@@ -1,8 +1,11 @@
 <template>
-  <nav>
+  <head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+  </head>
+  <!-- <nav>
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>
-  </nav>
+  </nav> -->
   <router-view/>
 </template>
 
@@ -14,7 +17,9 @@
   text-align: center;
   color: #2c3e50;
 }
-
+body {
+  margin: 0;
+}
 nav {
   padding: 30px;
 }
@@ -27,4 +32,8 @@ nav a {
 nav a.router-link-exact-active {
   color: #42b983;
 }
+* { 
+ margin: 0; 
+ padding: 0; 
+} 
 </style>
