@@ -48,6 +48,8 @@ h1 {
     padding-top: 30px;
     padding-bottom: 40px;
     font-size: 40px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
 }
 @media (max-width: 700px) {
     .mainwindow {

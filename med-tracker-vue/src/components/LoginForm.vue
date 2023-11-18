@@ -21,6 +21,10 @@
                 <input type="text" placeholder="Username" required>
             </div>
             <div class="input">
+                <span class="material-symbols-outlined">mail</span>
+                <input type="text" placeholder="Email" required>
+            </div>
+            <div class="input">
                 <span class="material-symbols-outlined">key</span>
                 <input type="password" placeholder="Password" required> 
             </div>
@@ -39,7 +43,7 @@
                 Need Help? Learn more about how to retrieve an existing account.
             </p>
             <div class="input">
-                <span class="material-symbols-outlined">person</span>
+                <span class="material-symbols-outlined">mail</span>
                 <input type="text" placeholder="Email" required>
             </div>
             <div class="submit">
