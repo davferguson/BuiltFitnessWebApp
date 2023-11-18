@@ -1,17 +1,17 @@
 <template>
-    <form class="container">
+    <form class="container" @submit.prevent>
         <div v-if="selection == 'login'">
             <h3>Login Here</h3>
             <div class="input">
                 <span class="material-symbols-outlined">person</span>
-                <input type="text" placeholder="Username" required>
+                <input type="text" placeholder="Username" v-model="loginReq.username" required>
             </div>
             <div class="input">
                 <span class="material-symbols-outlined">key</span>
-                <input type="password" placeholder="Password" required> 
+                <input type="password" placeholder="Password" v-model="loginReq.password" required> 
             </div>
             <div class="submit">
-                <button type="submit">Login</button>
+                <button type="submit" @click="login">Login</button>
             </div>
         </div>
         <div v-if="selection == 'register'">
@@ -55,8 +55,38 @@
 </template>
 
 <script>
+import authService from "../services/AuthService";
+
 export default {
     name: 'loginForm',
+    data() {
+        return {
+            loginReq: {
+                username: "",
+                password: ""
+            },
+            invalidCredentials: false
+        }
+    },
+    methods: {
+        login() {
+            authService
+            .login(this.loginReq)
+            .then(response => {
+                if(response.status == 200) {
+                    this.$store.commit("SET_AUTH_TOKEN", response.data.token);
+                    this.$store.commit("SET_USER", response.data.user);
+                }
+            })
+            .catch(error => {
+            const response = error.response;
+
+            if (response.status === 400) {
+                this.invalidCredentials = true;
+            }
+            });
+        }
+    },
     computed: {
         selection: function() {
             return this.$store.state.loginSelection;

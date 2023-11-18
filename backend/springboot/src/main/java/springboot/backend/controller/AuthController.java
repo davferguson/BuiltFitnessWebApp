@@ -14,7 +14,8 @@ import springboot.backend.dao.UserDao;
 import springboot.backend.exception.UserAlreadyExistsException;
 import springboot.backend.model.*;
 
-@Controller
+@RestController
+@CrossOrigin
 @RequestMapping("/auth")
 public class AuthController {
     private final AuthenticationManager authenticationManager;
@@ -31,7 +32,7 @@ public class AuthController {
     @ResponseBody
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public ResponseEntity login(@RequestBody LoginReq loginReq)  {
-
+        System.out.println("username: " + loginReq.getUsername() + " password: " + loginReq.getPassword());
         try {
             Authentication authentication =
                     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginReq.getUsername(), loginReq.getPassword()));
