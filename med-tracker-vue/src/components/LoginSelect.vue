@@ -64,4 +64,21 @@ label {
   padding-top: 34px;
   padding-bottom: 34px;
 }
+
+@media (max-width: 950px) {
+    .container {
+        width: 300px;
+    }
+}
+@media (max-width: 800px) {
+    .container {
+        width: 200px;
+    }
+}
+@media (max-width: 700px) {
+    .container {
+        width: 100px;
+        font-size: 13px;
+    }
+}
 </style>

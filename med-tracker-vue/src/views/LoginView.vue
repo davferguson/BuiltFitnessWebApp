@@ -29,13 +29,13 @@ export default {
 }
 .mainwindow {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    /* grid-template-columns: 1fr 1fr; */
     grid-auto-flow: column;
     place-items: center;
     gap: 40px;
     /* width: 940px; */
-    margin-left: auto;
-    margin-right: auto;
+    /* margin-left: auto;
+    margin-right: auto; */
 }
 #login-select {
     justify-self: end;
@@ -48,5 +48,10 @@ h1 {
     padding-top: 30px;
     padding-bottom: 40px;
     font-size: 40px;
+}
+@media (max-width: 700px) {
+    .mainwindow {
+        gap: 20px;
+    }
 }
 </style>
