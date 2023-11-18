@@ -2,8 +2,11 @@ package springboot.backend.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-import springboot.backend.exception.UserNotFoundException;
+import springboot.backend.exception.UserAlreadyExistsException;
+import springboot.backend.model.RegisterUser;
 import springboot.backend.model.User;
 
 import java.util.Objects;
@@ -22,7 +25,20 @@ public class JdbcUserDoa implements UserDao{
         if(results.next()) {
             return mapRowToUser(results);
         } else {
-            throw new UserNotFoundException();
+            throw new UsernameNotFoundException("User " + username + " was not found.");
+        }
+    }
+
+    @Override
+    public boolean registerUser(RegisterUser user) {
+        String sql = "INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)";
+        String password_hash = new BCryptPasswordEncoder().encode(user.getPassword());
+
+        try {
+            User existingUser = findUserByUsername(user.getUsername());
+            throw new UserAlreadyExistsException();
+        } catch (UsernameNotFoundException e) {
+            return jdbcTemplate.update(sql, user.getUsername(), user.getEmail(), password_hash) == 1;
         }
     }
 

@@ -6,26 +6,25 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import springboot.backend.auth.JwtUtil;
-import springboot.backend.model.ErrorRes;
-import springboot.backend.model.LoginReq;
-import springboot.backend.model.LoginRes;
-import springboot.backend.model.User;
+import springboot.backend.dao.UserDao;
+import springboot.backend.exception.UserAlreadyExistsException;
+import springboot.backend.model.*;
 
 @Controller
 @RequestMapping("/auth")
 public class AuthController {
     private final AuthenticationManager authenticationManager;
+    private UserDao userDao;
 
     private JwtUtil jwtUtil;
-    public AuthController(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
+    public AuthController(AuthenticationManager authenticationManager, JwtUtil jwtUtil, UserDao userDao) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
+        this.userDao = userDao;
 
     }
 
@@ -49,6 +48,17 @@ public class AuthController {
         }catch (Exception e){
             ErrorRes errorResponse = new ErrorRes(HttpStatus.BAD_REQUEST, e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public void register(@RequestBody RegisterUser newUser) {
+        try {
+            User user = userDao.findUserByUsername(newUser.getUsername());
+            throw new UserAlreadyExistsException();
+        } catch (UsernameNotFoundException e) {
+            userDao.registerUser(newUser);
         }
     }
 
