@@ -79,11 +79,14 @@ export default {
                 }
             })
             .catch(error => {
-            const response = error.response;
+            if(error.response != null){
+                const response = error.response;
 
-            if (response.status === 400) {
-                this.invalidCredentials = true;
+                if (response.status === 400) {
+                    this.invalidCredentials = true;
+                }
             }
+            
             });
         }
     },
