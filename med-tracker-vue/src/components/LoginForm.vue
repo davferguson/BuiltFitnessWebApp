@@ -83,7 +83,7 @@ export default {
             if(error.response != null){
                 const response = error.response;
 
-                if (response.status === 400) {
+                if (response.status === 401) {
                     this.invalidCredentials = true;
                 }
             }

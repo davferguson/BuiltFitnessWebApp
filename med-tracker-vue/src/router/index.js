@@ -16,7 +16,10 @@ const routes = [
   {
     path: '/medsearch',
     name: 'medSearch',
-    component: MedSearchView
+    component: MedSearchView,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/home',
