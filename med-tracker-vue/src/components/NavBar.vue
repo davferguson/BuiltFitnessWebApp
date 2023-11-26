@@ -37,11 +37,6 @@ export default {
             this.activeElement = element;
         }
     },
-    computed: {
-        currentRouteName() {
-            return this.$route.name;
-        }
-    },
     async mounted() {
         const route = useRoute()
         const router = useRouter()
@@ -58,6 +53,8 @@ export default {
                 this.setActive(listItem, 2);
                 break;
         }
+
+        this.listItemOne = document.getElementById("list-item-one");
     }
 }
 </script>
