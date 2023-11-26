@@ -2,7 +2,7 @@
   <head>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
   </head>
-  <LogoutButton v-if="$store.state.token != ''" />
+  <!-- <LogoutButton v-if="$store.state.token != ''" /> -->
   <NavBar v-if="$store.state.token != '' && $route.name !='login'" />
   <!-- <nav>
     <router-link to="/">Home</router-link> |
@@ -12,12 +12,12 @@
 </template>
 
 <script>
-  import LogoutButton from '@/components/LogoutButton.vue';
+  // import LogoutButton from '@/components/LogoutButton.vue';
   import NavBar from '@/components/NavBar.vue';
 
   export default {
       components: {
-          LogoutButton,
+          // LogoutButton,
           NavBar
       }
   }

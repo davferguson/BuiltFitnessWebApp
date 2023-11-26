@@ -10,15 +10,20 @@
             <div id="selection-box"></div>
             <li id="list-item-one" @click="setActive($event.target, 1)" :class="{ active : activeElement == 1 }"><router-link :to="{ name: 'home'}">Home</router-link></li>
             <li id="list-item-two" @click="setActive($event.target, 2)" :class="{ active : activeElement == 2 }"><router-link :to="{ name: 'about'}">About</router-link></li>
+            <li><LogoutButton /></li>
         </ul>
     </div>
 </template>
 
 <script>
 import { useRoute, useRouter } from 'vue-router'
+import LogoutButton from '@/components/LogoutButton.vue';
 
 export default {
     name: 'NavBar',
+    components: {
+        LogoutButton,
+    },
     props: {
     },
     data() {
