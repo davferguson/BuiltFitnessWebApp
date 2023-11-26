@@ -74,6 +74,7 @@ export default {
             .login(this.loginReq)
             .then(response => {
                 if(response.status == 200) {
+                    console.log("YES");
                     this.$store.commit("SET_AUTH_TOKEN", response.data.token);
                     this.$store.commit("SET_USER", response.data.user);
                 }

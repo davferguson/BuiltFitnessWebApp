@@ -42,12 +42,28 @@ public class JdbcUserDoa implements UserDao{
         }
     }
 
+    @Override
+    public boolean create(String username, String email, String password, String role) {
+        String insertUserSql = "insert into users (username, email, password_hash, role) values (?, ?, ?, ?)";
+        String password_hash = new BCryptPasswordEncoder().encode(password);
+        String ssRole = role.toUpperCase().startsWith("ROLE_") ? role.toUpperCase() : "ROLE_" + role.toUpperCase();
+
+        try {
+            User user = findUserByUsername(username);
+            throw new UserAlreadyExistsException();
+        } catch (UsernameNotFoundException e) {
+            return jdbcTemplate.update(insertUserSql, username, email, password_hash, ssRole) == 1;
+        }
+    }
+
     private User mapRowToUser(SqlRowSet rs) {
         User user = new User();
         user.setId(rs.getInt("user_id"));
         user.setUsername(rs.getString("username"));
         user.setPassword(rs.getString("password_hash"));
         user.setEmail(rs.getString("email"));
+        user.setAuthorities(Objects.requireNonNull(rs.getString("role")));
+        user.setActivated(rs.getInt("status") == 1);
         return user;
     }
 }
