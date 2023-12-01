@@ -148,7 +148,7 @@ h3 {
     font-size: 25px;
 }
 button {
-    background: #00ad45;
+    background: #5161ce;
     border: none;
     cursor: pointer;
     font-weight: 600;

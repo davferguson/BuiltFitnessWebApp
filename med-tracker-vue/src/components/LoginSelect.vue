@@ -49,7 +49,7 @@ input {
     display: none;
 }
 input:checked + label {
-  background: #00ad45;
+  background: #5161ce;
   color: #fff;
 }
 span {
