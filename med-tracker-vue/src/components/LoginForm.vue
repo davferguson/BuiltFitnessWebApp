@@ -10,6 +10,9 @@
                 <span class="material-symbols-outlined">key</span>
                 <input type="password" placeholder="Password" v-model="loginReq.password" required> 
             </div>
+            <div class="form-alertbox" v-if="invalidCredentials">
+                Invalid username or password
+            </div>
             <div class="submit">
                 <button type="submit" @click="login">Login</button>
             </div>
@@ -123,6 +126,21 @@ export default {
     margin-left: 30px;
     margin-right: 30px;
     margin-top: 35px;
+}
+.form-alertbox {
+    border-style: solid;
+    border-width: 1px;
+    border-color: red;
+    background-color: #fd696946;
+    color: red;
+    font-size: 14px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-bottom: 20px;
 }
 p {
     margin-left: 30px;
