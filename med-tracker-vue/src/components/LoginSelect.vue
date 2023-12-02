@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
     name: "loginSelect",
     data() {
@@ -31,6 +33,16 @@ export default {
     methods: {
         onSelect() {
             this.$store.commit("SET_LOGIN_SELECTION", this.selection)
+        }
+    },
+    computed: {
+        ...mapState(['loginSelection']),
+    },
+    watch: {
+        loginSelection: {
+            handler(newVal){
+                this.selection = newVal;
+            }
         }
     },
     created() {

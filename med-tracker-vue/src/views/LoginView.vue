@@ -31,7 +31,7 @@ export default {
     display: grid;
     /* grid-template-columns: 1fr 1fr; */
     grid-auto-flow: column;
-    place-items: center;
+    /* place-items: center; */
     gap: 40px;
     /* width: 940px; */
     /* margin-left: auto;

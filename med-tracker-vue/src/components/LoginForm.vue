@@ -1,77 +1,87 @@
 <template>
-    <form class="container" v-if="selection == 'login'" @submit.prevent="login">
-        <div v-if="selection == 'login'">
-            <h3>Login Here</h3>
-            <div class="input">
-                <span class="material-symbols-outlined">person</span>
-                <input type="text" placeholder="Username" v-model="loginReq.username" required>
-            </div>
-            <div class="input">
-                <span class="material-symbols-outlined">key</span>
-                <input type="password" placeholder="Password" v-model="loginReq.password" required> 
-            </div>
-            <div class="form-alertbox" v-if="invalidCredentials">
-                Invalid username or password
-            </div>
-            <div class="submit">
-                <button type="submit">Login</button>
+    <div class="container">
+        <div class="popup" :style="{'visibility': registerSuccess ? 'visible' : 'hidden'}">
+            <div class="popup-content">
+                <span class="material-symbols-outlined">task_alt</span>
+                <h2>Success</h2>
+                <p>Your account has been successfully created!</p>
+                <button @click="openLogin">Login</button>
             </div>
         </div>
-    </form>
-    <form class="container" v-if="selection == 'register'" @submit.prevent="register">
-        <div v-if="selection == 'register'">
-            <h3>Register Here</h3>
-            <div class="input" :style="{'background-color': isUsernameTaken ? '#fd696946' : formInputColor}">
-                <span class="material-symbols-outlined">person</span>
-                <input type="text" placeholder="Username" v-model="registerReq.username" required>
-                <span class="material-symbols-outlined register-error-icon" v-if="isUsernameTaken">warning</span>
+        <form v-if="selection == 'login'" @submit.prevent="login">
+            <div v-if="selection == 'login'">
+                <h3>Login Here</h3>
+                <div class="input">
+                    <span class="material-symbols-outlined">person</span>
+                    <input type="text" placeholder="Username" v-model="loginReq.username" required>
+                </div>
+                <div class="input">
+                    <span class="material-symbols-outlined">key</span>
+                    <input type="password" placeholder="Password" v-model="loginReq.password" required> 
+                </div>
+                <div class="form-alertbox" v-if="invalidCredentials">
+                    Invalid username or password
+                </div>
+                <div class="submit">
+                    <button type="submit">Login</button>
+                </div>
             </div>
-            <div class="register-error" v-if="isUsernameTaken">
-                Username already exists
+        </form>
+        <form v-if="selection == 'register'" @submit.prevent="register">
+            <div v-if="selection == 'register'">
+                <h3>Register Here</h3>
+                <div class="input" :style="{'background-color': isUsernameTaken ? '#fd696946' : formInputColor}">
+                    <span class="material-symbols-outlined">person</span>
+                    <input type="text" placeholder="Username" v-model="registerReq.username" required>
+                    <span class="material-symbols-outlined register-error-icon" v-if="isUsernameTaken">warning</span>
+                </div>
+                <div class="register-error" v-if="isUsernameTaken">
+                    Username already exists
+                </div>
+                <div class="input" :style="{'background-color': !isValidEmail ? '#fd696946' : formInputColor}">
+                    <span class="material-symbols-outlined">mail</span>
+                    <input type="text" placeholder="Email" v-model="registerReq.email">
+                    <span class="material-symbols-outlined register-error-icon" v-if="!isValidEmail">warning</span>
+                </div>
+                <div class="register-error" v-if="!isValidEmail">
+                    Invalid email
+                </div>
+                <div class="input" :style="{'background-color': !doPasswordsMatch ? '#fd696946' : formInputColor}">
+                    <span class="material-symbols-outlined">key</span>
+                    <input type="password" placeholder="Password" v-model="registerReq.password" required> 
+                    <span class="material-symbols-outlined register-error-icon" v-if="!doPasswordsMatch">warning</span>
+                </div>
+                <div class="input" :style="{'background-color': !doPasswordsMatch ? '#fd696946' : formInputColor}">
+                    <span class="material-symbols-outlined">key</span>
+                    <input type="password" placeholder="Confirm Password" v-model="registerReq.confirmPassword" required> 
+                    <span class="material-symbols-outlined register-error-icon" v-if="!doPasswordsMatch">warning</span>
+                </div>
+                <div class="register-error" id="register-error-password" v-if="!doPasswordsMatch">
+                    Passwords don't match
+                </div>
+                <div class="submit">
+                    <button type="submit">Register</button>
+                </div>
             </div>
-            <div class="input" :style="{'background-color': !isValidEmail ? '#fd696946' : formInputColor}">
-                <span class="material-symbols-outlined">mail</span>
-                <input type="text" placeholder="Email" v-model="registerReq.email">
-                <span class="material-symbols-outlined register-error-icon" v-if="!isValidEmail">warning</span>
+        </form>
+        <form v-if="selection == 'forgot'" @submit.prevent>
+            <div v-if="selection == 'forgot'">
+                <h3>Reset Password</h3>
+                <p>
+                    Enter your email address below and we'll send you an email with instructions.<br><br>
+                    Need Help? Learn more about how to retrieve an existing account.
+                </p>
+                <div class="input">
+                    <span class="material-symbols-outlined">mail</span>
+                    <input type="text" placeholder="Email" required>
+                </div>
+                <div class="submit">
+                    <button type="submit">Reset</button>
+                </div>
             </div>
-            <div class="register-error" v-if="!isValidEmail">
-                Invalid email
-            </div>
-            <div class="input" :style="{'background-color': !doPasswordsMatch ? '#fd696946' : formInputColor}">
-                <span class="material-symbols-outlined">key</span>
-                <input type="password" placeholder="Password" v-model="registerReq.password" required> 
-                <span class="material-symbols-outlined register-error-icon" v-if="!doPasswordsMatch">warning</span>
-            </div>
-            <div class="input" :style="{'background-color': !doPasswordsMatch ? '#fd696946' : formInputColor}">
-                <span class="material-symbols-outlined">key</span>
-                <input type="password" placeholder="Confirm Password" v-model="registerReq.confirmPassword" required> 
-                <span class="material-symbols-outlined register-error-icon" v-if="!doPasswordsMatch">warning</span>
-            </div>
-            <div class="register-error" id="register-error-password" v-if="!doPasswordsMatch">
-                Passwords don't match
-            </div>
-            <div class="submit">
-                <button type="submit">Register</button>
-            </div>
-        </div>
-    </form>
-    <form class="container" v-if="selection == 'forgot'" @submit.prevent>
-        <div v-if="selection == 'forgot'">
-            <h3>Reset Password</h3>
-            <p>
-                Enter your email address below and we'll send you an email with instructions.<br><br>
-                Need Help? Learn more about how to retrieve an existing account.
-            </p>
-            <div class="input">
-                <span class="material-symbols-outlined">mail</span>
-                <input type="text" placeholder="Email" required>
-            </div>
-            <div class="submit">
-                <button type="submit">Reset</button>
-            </div>
-        </div>
-        
-    </form>
+            
+        </form>
+    </div>
 </template>
 
 <script>
@@ -97,6 +107,7 @@ export default {
             doPasswordsMatch: true,
             isValidEmail: true,
             formInputColor: "#eee",
+            registerSuccess: false,
         }
     },
     methods: {
@@ -139,16 +150,20 @@ export default {
                     .register(this.registerReq)
                     .then((response) => {
                         if (response.status == 201) {
-                        this.$router.push({
-                            path: '/',
-                            // query: { registration: 'success' },
-                        });
+                            this.registerSuccess = true;
+                            this.registerReq.username = '';
+                            this.registerReq.email = '';
+                            this.registerReq.password = '';
+                            this.registerReq.confirmPassword = '';
+                            this.$router.push({
+                                path: '/',
+                                // query: { registration: 'success' },
+                            });
                         }
                     })
                     .catch((error) => {
                         const response = error.response;
                         if(response != null){
-                            console.log(response.data.message);
                             if (response.status === 400 && response.data.message === "User Already Exists.") {
                                 this.isUsernameTaken = true;
                             }
@@ -157,6 +172,10 @@ export default {
                 } 
             }
         },
+        openLogin() {
+            this.$store.commit("SET_LOGIN_SELECTION", "login");
+            this.registerSuccess = false;
+        }
     },
     computed: {
         selection: function() {
@@ -219,8 +238,60 @@ export default {
     color: red;
     margin-right: 0px;
 }
+.popup {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    visibility: hidden;
+}
+.popup-content {
+    margin: auto;
+    width: 350px;
+    height: 420px;
+    background-color: white;
+    color: black;
+    text-align: center;
+    /* border-radius: 6px; */
+    /* padding: 8px 0; */
+    position: absolute;
+    z-index: 1;
+    /* left: 50%; */
+    /* margin-left: -80px; */
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 #register-error-password {
     margin-bottom: -17px;
+}
+.popup-content span {
+    font-size: 70px;
+    color: rgba(47, 224, 47, 0.774);
+    margin-top: 50px;
+}
+.popup-content h2 {
+    font-size: 40px;
+    color: rgba(47, 224, 47, 0.774);
+    margin-top: 20px;
+    font-weight: normal;
+}
+.popup-content p {
+    margin-top: 80px;
+    margin-left: 50px;
+    margin-right: 50px;
+    text-align: center;
+    font-size: 14px;
+    color: #00000094;
+}
+.popup-content button {
+    background-color: rgba(47, 224, 47, 0.774);
+    width: 75%;
+    /* border-radius: 40px; */
 }
 p {
     margin-left: 30px;
