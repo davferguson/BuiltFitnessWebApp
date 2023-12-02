@@ -1,5 +1,5 @@
 <template>
-    <form class="container" @submit.prevent>
+    <form class="container" v-if="selection == 'login'" @submit.prevent="login">
         <div v-if="selection == 'login'">
             <h3>Login Here</h3>
             <div class="input">
@@ -14,9 +14,11 @@
                 Invalid username or password
             </div>
             <div class="submit">
-                <button type="submit" @click="login">Login</button>
+                <button type="submit">Login</button>
             </div>
         </div>
+    </form>
+    <form class="container" v-if="selection == 'register'" @submit.prevent="register">
         <div v-if="selection == 'register'">
             <h3>Register Here</h3>
             <div class="input" :style="{'background-color': isUsernameTaken ? '#fd696946' : formInputColor}">
@@ -27,9 +29,13 @@
             <div class="register-error" v-if="isUsernameTaken">
                 Username already exists
             </div>
-            <div class="input">
+            <div class="input" :style="{'background-color': !isValidEmail ? '#fd696946' : formInputColor}">
                 <span class="material-symbols-outlined">mail</span>
-                <input type="text" placeholder="Email" v-model="registerReq.email" required>
+                <input type="text" placeholder="Email" v-model="registerReq.email">
+                <span class="material-symbols-outlined register-error-icon" v-if="!isValidEmail">warning</span>
+            </div>
+            <div class="register-error" v-if="!isValidEmail">
+                Invalid email
             </div>
             <div class="input" :style="{'background-color': !doPasswordsMatch ? '#fd696946' : formInputColor}">
                 <span class="material-symbols-outlined">key</span>
@@ -45,9 +51,11 @@
                 Passwords don't match
             </div>
             <div class="submit">
-                <button type="submit" @click="register">Register</button>
+                <button type="submit">Register</button>
             </div>
         </div>
+    </form>
+    <form class="container" v-if="selection == 'forgot'" @submit.prevent>
         <div v-if="selection == 'forgot'">
             <h3>Reset Password</h3>
             <p>
@@ -87,6 +95,7 @@ export default {
             invalidCredentials: false,
             isUsernameTaken: false,
             doPasswordsMatch: true,
+            isValidEmail: true,
             formInputColor: "#eee",
         }
     },
@@ -113,28 +122,39 @@ export default {
             });
         },
         register() {
+            this.isUsernameTaken = false;
+            //eslint-disable-next-line
+            if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.registerReq.email)){
+                    this.isValidEmail = true;
+            } else {
+                this.isValidEmail = false;
+            }
             if (this.registerReq.password != this.registerReq.confirmPassword) {
                 this.doPasswordsMatch = false;
-            } else {            
-                authService
-                .register(this.registerReq)
-                .then((response) => {
-                    if (response.status == 201) {
-                    this.$router.push({
-                        path: '/',
-                        // query: { registration: 'success' },
-                    });
-                    }
-                })
-                .catch((error) => {
-                    const response = error.response;
-                    if(response != null){
-                        console.log(response.data.message);
-                        if (response.status === 400 && response.data.message === "User Already Exists.") {
-                            this.isUsernameTaken = true;
+            } else {    
+                this.doPasswordsMatch = true;       
+                //eslint-disable-next-line
+                if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.registerReq.email)){
+                    authService
+                    .register(this.registerReq)
+                    .then((response) => {
+                        if (response.status == 201) {
+                        this.$router.push({
+                            path: '/',
+                            // query: { registration: 'success' },
+                        });
                         }
-                    }
-                });
+                    })
+                    .catch((error) => {
+                        const response = error.response;
+                        if(response != null){
+                            console.log(response.data.message);
+                            if (response.status === 400 && response.data.message === "User Already Exists.") {
+                                this.isUsernameTaken = true;
+                            }
+                        }
+                    });
+                } 
             }
         },
     },
