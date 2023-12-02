@@ -7,7 +7,7 @@ export default {
   },
 
   register(user) {
-    return axios.post('/auth/register', user)
+    return axios.post('/register', user)
   }
 
 }

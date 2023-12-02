@@ -19,24 +19,33 @@
         </div>
         <div v-if="selection == 'register'">
             <h3>Register Here</h3>
-            <div class="input">
+            <div class="input" :style="{'background-color': isUsernameTaken ? '#fd696946' : formInputColor}">
                 <span class="material-symbols-outlined">person</span>
-                <input type="text" placeholder="Username" required>
+                <input type="text" placeholder="Username" v-model="registerReq.username" required>
+                <span class="material-symbols-outlined register-error-icon" v-if="isUsernameTaken">warning</span>
+            </div>
+            <div class="register-error" v-if="isUsernameTaken">
+                Username already exists
             </div>
             <div class="input">
                 <span class="material-symbols-outlined">mail</span>
-                <input type="text" placeholder="Email" required>
+                <input type="text" placeholder="Email" v-model="registerReq.email" required>
             </div>
-            <div class="input">
+            <div class="input" :style="{'background-color': !doPasswordsMatch ? '#fd696946' : formInputColor}">
                 <span class="material-symbols-outlined">key</span>
-                <input type="password" placeholder="Password" required> 
+                <input type="password" placeholder="Password" v-model="registerReq.password" required> 
+                <span class="material-symbols-outlined register-error-icon" v-if="!doPasswordsMatch">warning</span>
             </div>
-            <div class="input">
+            <div class="input" :style="{'background-color': !doPasswordsMatch ? '#fd696946' : formInputColor}">
                 <span class="material-symbols-outlined">key</span>
-                <input type="password" placeholder="Confirm Password" required> 
+                <input type="password" placeholder="Confirm Password" v-model="registerReq.confirmPassword" required> 
+                <span class="material-symbols-outlined register-error-icon" v-if="!doPasswordsMatch">warning</span>
+            </div>
+            <div class="register-error" id="register-error-password" v-if="!doPasswordsMatch">
+                Passwords don't match
             </div>
             <div class="submit">
-                <button type="submit">Register</button>
+                <button type="submit" @click="register">Register</button>
             </div>
         </div>
         <div v-if="selection == 'forgot'">
@@ -68,7 +77,17 @@ export default {
                 username: "",
                 password: ""
             },
-            invalidCredentials: false
+            registerReq: {
+                username: "",
+                email: "",
+                password: "",
+                confirmPassword: "",
+                role: "ROLE_USER"
+            },
+            invalidCredentials: false,
+            isUsernameTaken: false,
+            doPasswordsMatch: true,
+            formInputColor: "#eee",
         }
     },
     methods: {
@@ -77,7 +96,6 @@ export default {
             .login(this.loginReq)
             .then(response => {
                 if(response.status == 200) {
-                    console.log("YES");
                     this.$store.commit("SET_AUTH_TOKEN", response.data.token);
                     this.$store.commit("SET_USER", response.data.user);
                     this.$router.push("/home");
@@ -93,7 +111,32 @@ export default {
             }
             
             });
-        }
+        },
+        register() {
+            if (this.registerReq.password != this.registerReq.confirmPassword) {
+                this.doPasswordsMatch = false;
+            } else {            
+                authService
+                .register(this.registerReq)
+                .then((response) => {
+                    if (response.status == 201) {
+                    this.$router.push({
+                        path: '/',
+                        // query: { registration: 'success' },
+                    });
+                    }
+                })
+                .catch((error) => {
+                    const response = error.response;
+                    if(response != null){
+                        console.log(response.data.message);
+                        if (response.status === 400 && response.data.message === "User Already Exists.") {
+                            this.isUsernameTaken = true;
+                        }
+                    }
+                });
+            }
+        },
     },
     computed: {
         selection: function() {
@@ -120,7 +163,7 @@ export default {
     margin-left: 30px;
     margin-right: 30px;
     margin-bottom: 20px;
-    background-color: #eee;
+    background-color: v-bind('formInputColor');
 }
 .submit {
     margin-left: 30px;
@@ -141,6 +184,23 @@ export default {
     margin-left: 30px;
     margin-right: 30px;
     margin-bottom: 20px;
+}
+.register-error {
+    margin-top: -16px;
+    margin-bottom: 10px;
+    margin-left: 30px;
+    font-size: 12px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    color: red;
+    text-align: left;
+}
+.register-error-icon {
+    color: red;
+    margin-right: 0px;
+}
+#register-error-password {
+    margin-bottom: -17px;
 }
 p {
     margin-left: 30px;
