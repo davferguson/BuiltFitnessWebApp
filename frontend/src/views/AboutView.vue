@@ -25,7 +25,6 @@ export default {
     created() {
         ApiService.createSignedUrl(this.videoObj).then(response => {
             this.videoSrc = response.data;
-            console.log(this.videoSrc);
         })
     }
   };
