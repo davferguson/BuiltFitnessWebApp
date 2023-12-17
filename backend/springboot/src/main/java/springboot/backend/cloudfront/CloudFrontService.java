@@ -1,16 +1,20 @@
 package springboot.backend.cloudfront;
+import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.cloudfront.model.CannedSignerRequest;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.PrivateKey;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import software.amazon.awssdk.services.cloudfront.CloudFrontUtilities;
 import software.amazon.awssdk.services.cloudfront.url.SignedUrl;
 
-public class CloudFrontSigner {
+@Service
+public class CloudFrontService {
     private CloudFrontUtilities cloudFrontUtilities = CloudFrontUtilities.create();
+    private String keyPairId = "K2BGUGZ1NTWWB4";
+    private Path privateKeyPath = Paths.get("X:\\workspace\\BuiltFitnessWebsite\\keys\\private_key.der");
+    private String distDomain = "https://d1ts8jzzdee93e.cloudfront.net";
 
     private CannedSignerRequest createCannedRequest(int expiration, String resourceUrl, String keyPairId, Path privateKeyPath) throws Exception {
         Instant expirationDate = Instant.now().plus(expiration, ChronoUnit.SECONDS);
@@ -23,14 +27,10 @@ public class CloudFrontSigner {
         return cannedRequest;
     }
 
-    public String createSignedUrl(int expiration, String resourceUrl) {
-        String privateKeyFileName = "X:\\workspace\\BuiltFitnessWebsite\\keys\\private_key.der";
-        Path privateKeyPath = Paths.get(privateKeyFileName);
-        String keyPairId = "K2BGUGZ1NTWWB4";
-        String resUrl = "https://d1ts8jzzdee93e.cloudfront.net/fish.mp4";
-
+    public String createSignedUrl(int expiration, String objectUrl) {
         CannedSignerRequest cannedRequest = null;
         try {
+            String resourceUrl = distDomain + "/" + objectUrl;
             cannedRequest = createCannedRequest(expiration, resourceUrl, keyPairId, privateKeyPath);
         } catch (Exception e) {
             throw new RuntimeException(e);
