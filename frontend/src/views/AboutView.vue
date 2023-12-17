@@ -1,12 +1,32 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
-    <video class="video" ref="video" controls>
-      <source src="../../public/images/fish.mp4" type="video/mp4">
-    </video>
-    <h1>From S3</h1>
-    <video class="video" ref="video" controls>
-      <source src="https://d3mhpq62j4ojt5.cloudfront.net/fish.mp4" type="video/mp4">
+    <h1>From Cloudfront</h1>
+    <video :key="videoSrc" class="video" ref="video" controls>
+      <source :src="videoSrc" type="video/mp4">
     </video>
   </div>
 </template>
+
+<script>
+import ApiService from '@/services/ApiService';
+
+export default {
+    components: {
+    },
+    data() {
+      return {
+        videoSrc: '',
+        videoObj: 'fish.mp4'
+      }
+    },
+    methods: {
+
+    },
+    created() {
+        ApiService.createSignedUrl(this.videoObj).then(response => {
+            this.videoSrc = response.data;
+            console.log(this.videoSrc);
+        })
+    }
+  };
+</script>
