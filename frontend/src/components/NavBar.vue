@@ -47,7 +47,6 @@ export default {
         const router = useRouter()
         await router.isReady()
         let listItem = null;
-        console.log(route);
         switch(route.name) {
             case 'home':
                 listItem = document.getElementById("list-item-one");
