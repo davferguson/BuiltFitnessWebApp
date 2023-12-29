@@ -6,7 +6,7 @@ import store from '../store/index'
 
 const routes = [
   {
-    path: '/',
+    path: '/login',
     name: 'login',
     component: LoginView,
     meta: {
@@ -22,11 +22,11 @@ const routes = [
     }
   },
   {
-    path: '/home',
+    path: '/',
     name: 'home',
     component: HomeView,
     meta: {
-      requiresAuth: true
+      requiresAuth: false
     }
   },
   {

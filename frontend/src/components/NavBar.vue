@@ -47,13 +47,13 @@ export default {
         const router = useRouter()
         await router.isReady()
         let listItem = null;
-
-        switch(route.path) {
-            case '/home':
+        console.log(route);
+        switch(route.name) {
+            case 'home':
                 listItem = document.getElementById("list-item-one");
                 this.setActive(listItem, 1);
                 break;
-            case '/about':
+            case 'about':
                 listItem = document.getElementById("list-item-two");
                 this.setActive(listItem, 2);
                 break;

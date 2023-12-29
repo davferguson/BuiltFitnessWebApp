@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
   </head>
   <!-- <LogoutButton v-if="$store.state.token != ''" /> -->
-  <NavBar v-if="$store.state.token != '' && $route.name !='login'" />
+  <NavBar v-if="$route.name !='login'" />
   <!-- <nav>
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>
