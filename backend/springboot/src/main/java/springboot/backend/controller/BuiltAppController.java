@@ -1,5 +1,6 @@
 package springboot.backend.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import springboot.backend.cloudfront.CloudFrontService;
 import springboot.backend.model.openfda.FdaBrandMedSearchResult;
@@ -27,7 +28,7 @@ public class BuiltAppController {
     public FdaBrandMedSearchResult[] minutesReadFromISBN(@PathVariable String name){
         return apiService.fdaMedSearch(name);
     }
-
+    @PreAuthorize("isAuthenticated()")
     @ResponseBody
     @RequestMapping(value = "/signed_url/{url}", method = RequestMethod.GET)
     public String GenerateSignedUrl(@PathVariable String url){

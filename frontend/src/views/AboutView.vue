@@ -1,7 +1,8 @@
 <template>
   <div class="about">
     <h1>From Cloudfront</h1>
-    <video :key="videoSrc" class="video" ref="video" controls>
+    <h2 v-if="!hasAccess">You must be signed in to view this.</h2>
+    <video v-if="hasAccess" :key="videoSrc" class="video" ref="video" controls>
       <source :src="videoSrc" type="video/mp4">
     </video>
   </div>
@@ -16,7 +17,8 @@ export default {
     data() {
       return {
         videoSrc: '',
-        videoObj: 'fish.mp4'
+        videoObj: 'fish.mp4',
+        hasAccess: true,
       }
     },
     methods: {
@@ -25,7 +27,16 @@ export default {
     created() {
         ApiService.createSignedUrl(this.videoObj).then(response => {
             this.videoSrc = response.data;
+            this.hasAccess = true;
         })
+        .catch(error => {
+            if(error.response != null){
+                if (error.response.status === 401) {
+                    this.hasAccess = false;
+                }
+            }
+            
+            });
     }
   };
 </script>
