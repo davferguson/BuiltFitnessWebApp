@@ -16,6 +16,12 @@ export default createStore({
     user: currentUser || {}
   },
   getters: {
+    GET_TOKEN(state){
+      return state.token;
+    },
+    GET_USER(state){
+      return state.user;
+    }
   },
   mutations: {
     SET_LOGIN_SELECTION(state, payload){

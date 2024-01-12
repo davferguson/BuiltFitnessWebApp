@@ -12,11 +12,12 @@
                 <li><router-link :to="{ name: 'about'}">Contact</router-link></li>
             </ul>
             <div class="dropdown-btn">
-                <p>Account</p>
+                <p>{{ accountText }}</p>
                 <span class="material-symbols-outlined">expand_more</span>
                 <div class="dropdown-content">
-                    <router-link :to="{ name: 'login'}">Login</router-link>
-                    <router-link :to="{ name: 'login'}">Register</router-link>
+                    <router-link :to="{ name: 'login'}" v-if="this.$store.getters.GET_TOKEN === ''">Login</router-link>
+                    <router-link :to="{ name: 'login'}" v-if="this.$store.getters.GET_TOKEN === ''">Register</router-link>
+                    <router-link :to="{ name: 'login'}" v-if="this.$store.getters.GET_TOKEN !== ''" @click="logout">Logout</router-link>
                 </div>
             </div>
         </div>
@@ -34,9 +35,18 @@ export default {
     },
     data() {
         return {
+            accountText: 'Account'
         }
     },
     methods: {
+        logout() {
+            this.$store.commit("LOGOUT");
+        }
+    },
+    created() {
+        if(JSON.stringify(this.$store.getters.GET_USER) !== '{}'){
+            this.accountText = this.$store.getters.GET_USER.username;
+        }
     },
 }
 </script>
