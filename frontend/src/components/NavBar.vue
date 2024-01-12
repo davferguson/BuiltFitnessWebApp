@@ -52,8 +52,6 @@ export default {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css?family=Roboto');
-@import url('https://fonts.googleapis.com/css2?family=Rowdies:wght@300&display=swap');
 .background {
     background-color: #231f20;
 }
