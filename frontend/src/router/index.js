@@ -1,5 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import OnlineProgramsView from '../views/OnlineProgramsView.vue'
+import ClassesView from '../views/ClassesView.vue'
+import ContactView from '../views/ContactView.vue'
 import SignInView from '../views/SignInView.vue'
 import MedSearchView from '../views/MedSearchView.vue'
 import store from '../store/index'
@@ -39,7 +42,31 @@ const routes = [
     meta: {
       requiresAuth: false
     }
-  }
+  },
+  {
+    path: '/classes',
+    name: 'classes',
+    component: ClassesView,
+    meta: {
+      requiresAuth: false
+    }
+  },
+  {
+    path: '/onlineprograms',
+    name: 'onlineprograms',
+    component: OnlineProgramsView,
+    meta: {
+      requiresAuth: false
+    }
+  },
+  {
+    path: '/contact',
+    name: 'contact',
+    component: ContactView,
+    meta: {
+      requiresAuth: false
+    }
+  },
 ]
 
 const router = createRouter({

@@ -7,9 +7,9 @@
             <ul>
                 <li><router-link :to="{ name: 'home'}">Home</router-link></li>
                 <li><router-link :to="{ name: 'about'}">About</router-link></li>
-                <li><router-link :to="{ name: 'about'}">Classes</router-link></li>
-                <li><router-link :to="{ name: 'about'}">Online Programs</router-link></li>
-                <li><router-link :to="{ name: 'about'}">Contact</router-link></li>
+                <li><router-link :to="{ name: 'classes'}">Classes</router-link></li>
+                <li><router-link :to="{ name: 'onlineprograms'}">Online Programs</router-link></li>
+                <li><router-link :to="{ name: 'contact'}">Contact</router-link></li>
             </ul>
             <div class="dropdown-btn">
                 <p>{{ accountText }}</p>
