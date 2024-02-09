@@ -17,7 +17,7 @@
                 <div class="dropdown-content">
                     <router-link :to="{ name: 'login'}" v-if="this.$store.getters.GET_TOKEN === ''">Login</router-link>
                     <router-link :to="{ name: 'login'}" v-if="this.$store.getters.GET_TOKEN === ''">Register</router-link>
-                    <router-link :to="{ name: 'login'}" v-if="this.$store.getters.GET_TOKEN !== ''" @click="logout">Logout</router-link>
+                    <router-link :to="{ name: 'home'}" v-if="this.$store.getters.GET_TOKEN !== ''" @click="logout">Logout</router-link>
                 </div>
             </div>
         </div>
@@ -41,6 +41,7 @@ export default {
     methods: {
         logout() {
             this.$store.commit("LOGOUT");
+            this.accountText = 'Account';
         }
     },
     created() {
