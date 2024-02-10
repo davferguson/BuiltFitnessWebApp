@@ -30,6 +30,7 @@
       created() {
           ApiService.createSignedUrl(this.videoObj).then(response => {
               this.videoSrc = response.data;
+              console.log(response.data);
               this.hasAccess = true;
           })
           .catch(error => {
@@ -40,6 +41,13 @@
               }
               
               });
+          ApiService.listObjects().then(response => {
+            console.log(response.data);
+          }).catch(error => {
+            if(error.response != null){
+                  console.log('failed');
+              }
+          })
       }
     };
   </script>

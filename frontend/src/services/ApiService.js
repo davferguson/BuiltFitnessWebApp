@@ -8,5 +8,8 @@ export default {
     }, 
     createSignedUrl(url){
         return axios.get('/signed_url/'+url)
+    },
+    listObjects(){
+        return axios.get('/list_bucket')
     }
 }
