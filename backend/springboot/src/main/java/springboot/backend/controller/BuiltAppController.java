@@ -32,13 +32,13 @@ public class BuiltAppController {
     @ResponseBody
     @RequestMapping(value = "/signed_url/{url}", method = RequestMethod.GET)
     public String GenerateSignedUrl(@PathVariable String url){
-        return cloudFrontService.createSignedUrl(20, url);
+        return cloudFrontService.createSignedUrl(url);
     }
 
     @PreAuthorize("isAuthenticated()")
     @ResponseBody
     @RequestMapping(value = "/list_bucket", method = RequestMethod.GET)
     public String ListBucketObjects(){
-        return cloudFrontService.createSignedUrl(20, "?list-type=2");
+        return cloudFrontService.createSignedUrl("?list-type=2");
     }
 }
