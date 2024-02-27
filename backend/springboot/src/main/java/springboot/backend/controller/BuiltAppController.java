@@ -1,20 +1,27 @@
 package springboot.backend.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import springboot.backend.cloudfront.CloudFrontService;
+import springboot.backend.model.Course;
 import springboot.backend.model.openfda.FdaBrandMedSearchResult;
 import springboot.backend.service.ApiService;
+import springboot.backend.service.CourseService;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin
 public class BuiltAppController {
     private ApiService apiService;
     private CloudFrontService cloudFrontService;
+    private CourseService courseService;
 
-    public BuiltAppController(ApiService apiService, CloudFrontService cloudFrontService) {
+    public BuiltAppController(ApiService apiService, CloudFrontService cloudFrontService, CourseService courseService) {
         this.apiService = apiService;
         this.cloudFrontService = cloudFrontService;
+        this.courseService = courseService;
     }
 
     @ResponseBody
@@ -40,5 +47,11 @@ public class BuiltAppController {
     @RequestMapping(value = "/list_bucket", method = RequestMethod.GET)
     public String ListBucketObjects(){
         return cloudFrontService.createSignedUrl("?list-type=2");
+    }
+
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @RequestMapping(value = "/courses", method = RequestMethod.GET)
+    public List<Course> listCourses() {
+        return courseService.getAllCourses();
     }
 }
