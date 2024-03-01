@@ -1,4 +1,4 @@
-package springboot.backend.cloudfront;
+package springboot.backend.service;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.cloudfront.model.CannedSignerRequest;
 
