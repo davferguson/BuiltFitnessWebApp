@@ -8,6 +8,7 @@ import springboot.backend.model.Course;
 import springboot.backend.model.openfda.FdaBrandMedSearchResult;
 import springboot.backend.service.ApiService;
 import springboot.backend.service.CourseService;
+import springboot.backend.service.S3Service;
 
 import java.util.List;
 
@@ -16,11 +17,13 @@ import java.util.List;
 public class BuiltAppController {
     private ApiService apiService;
     private CloudFrontService cloudFrontService;
+    private S3Service s3Service;
     private CourseService courseService;
 
-    public BuiltAppController(ApiService apiService, CloudFrontService cloudFrontService, CourseService courseService) {
+    public BuiltAppController(ApiService apiService, CloudFrontService cloudFrontService,S3Service s3Service, CourseService courseService) {
         this.apiService = apiService;
         this.cloudFrontService = cloudFrontService;
+        this.s3Service = s3Service;
         this.courseService = courseService;
     }
 
@@ -52,6 +55,7 @@ public class BuiltAppController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     @RequestMapping(value = "/courses", method = RequestMethod.GET)
     public List<Course> listCourses() {
+        s3Service.testClient();
         return courseService.getAllCourses();
     }
 }
