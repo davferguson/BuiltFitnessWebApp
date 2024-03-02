@@ -1,5 +1,6 @@
 package springboot.backend.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
@@ -11,12 +12,14 @@ import java.util.List;
 
 @Service
 public class S3Service {
-    private final String AWS_ACCESS_KEY_ID = "";
-    private final String AWS_SECRET_ACCESS_KEY = "";
-    S3Client s3 = S3Client.builder()
-            .region(Region.US_EAST_1)
-            .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)))
-            .build();
+    private S3Client s3;
+    public S3Service(@Value("${aws.access-key}") String accessKeyId,
+                     @Value("${aws.secret-key}") String secretAccessKey) {
+        this.s3 = S3Client.builder()
+                .region(Region.US_EAST_1)
+                .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKeyId, secretAccessKey)))
+                .build();
+    }
 
     public void testClient(){
         String bucketName = "built-video-secured";
