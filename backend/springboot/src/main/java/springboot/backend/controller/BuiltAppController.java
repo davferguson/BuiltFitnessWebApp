@@ -10,7 +10,9 @@ import springboot.backend.service.ApiService;
 import springboot.backend.service.CourseService;
 import springboot.backend.service.S3Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -55,7 +57,14 @@ public class BuiltAppController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     @RequestMapping(value = "/courses", method = RequestMethod.GET)
     public List<Course> listCourses() {
-        s3Service.testClient();
+        s3Service.listBucketObjects("built-video-secured");
         return courseService.getAllCourses();
+    }
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @RequestMapping(value = "/presigned/{key}", method = RequestMethod.GET)
+    public String GeneratePresignedUrl(@PathVariable String key) {
+        Map<String, String> METADATA = new HashMap<>();
+//        METADATA.put("meta1", "value1");
+        return s3Service.createPresignedUrl("built-video-secured", key, METADATA);
     }
 }

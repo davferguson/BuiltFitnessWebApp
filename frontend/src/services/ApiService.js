@@ -11,5 +11,8 @@ export default {
     },
     listObjects(){
         return axios.get('/list_bucket')
+    },
+    createPresignedPutUrl(key){
+        return axios.get('/presigned/'+key)
     }
 }
