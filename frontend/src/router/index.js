@@ -73,7 +73,8 @@ const routes = [
     name: 'admin',
     component: AdminView,
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      requiresAdmin: true
     }
   },
 ]
@@ -86,11 +87,31 @@ router.beforeEach((to, from, next) => {
   // Determine if the route requires Authentication
   const requiresAuth = to.matched.some(x => x.meta.requiresAuth);
 
-  // If it does and they are not logged in, send the user to "/login"
-  if (requiresAuth && store.state.token === '') {
-    next({ name:'login'});
+  if(requiresAuth){
+    const requiresAdmin = to.matched.some(x => x.meta.requiresAdmin);
+    if(requiresAdmin){
+      const authorities = store.getters.GET_USER.authorities;
+      if(authorities !== undefined){
+          if(authorities.some(e => e.name === 'ROLE_ADMIN')){
+            next();
+          } else {
+            next({ name:'home'});
+            alert('must be an admin to access this');
+          }
+      } else {
+        next({ name:'home'});
+        alert('must be an admin to access this');
+      }
+      return false;
+    } else {
+      if (store.state.token !== ''){
+        next();
+      } else {
+        next({ name:'login'});
+        alert('must be logged in to access this')
+      }
+    }
   } else {
-    // Else let them go to their next destination
     next();
   }
 });
