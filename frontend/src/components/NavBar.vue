@@ -17,7 +17,7 @@
                 <div class="dropdown-content">
                     <router-link :to="{ name: 'login'}" v-if="this.$store.getters.GET_TOKEN === ''">Login</router-link>
                     <router-link :to="{ name: 'login'}" v-if="this.$store.getters.GET_TOKEN === ''">Register</router-link>
-                    <router-link :to="{ name: 'classes'}" v-if="this.hasAuth('ROLE_ADMIN')">Admin Panel</router-link>
+                    <router-link :to="{ name: 'admin'}" v-if="this.hasAuth('ROLE_ADMIN')">Admin Panel</router-link>
                     <router-link :to="{ name: 'home'}" v-if="this.$store.getters.GET_TOKEN !== ''" @click="logout">Logout</router-link>
                 </div>
             </div>

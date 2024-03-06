@@ -5,6 +5,7 @@ import ClassesView from '../views/ClassesView.vue'
 import ContactView from '../views/ContactView.vue'
 import SignInView from '../views/SignInView.vue'
 import MedSearchView from '../views/MedSearchView.vue'
+import AdminView from '../views/AdminView.vue'
 import store from '../store/index'
 
 const routes = [
@@ -67,6 +68,14 @@ const routes = [
       requiresAuth: false
     }
   },
+  {
+    path: '/admin',
+    name: 'admin',
+    component: AdminView,
+    meta: {
+      requiresAuth: true
+    }
+  },
 ]
 
 const router = createRouter({
@@ -79,7 +88,7 @@ router.beforeEach((to, from, next) => {
 
   // If it does and they are not logged in, send the user to "/login"
   if (requiresAuth && store.state.token === '') {
-    next("/");
+    next({ name:'login'});
   } else {
     // Else let them go to their next destination
     next();
