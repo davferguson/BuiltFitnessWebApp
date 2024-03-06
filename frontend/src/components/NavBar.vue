@@ -17,6 +17,7 @@
                 <div class="dropdown-content">
                     <router-link :to="{ name: 'login'}" v-if="this.$store.getters.GET_TOKEN === ''">Login</router-link>
                     <router-link :to="{ name: 'login'}" v-if="this.$store.getters.GET_TOKEN === ''">Register</router-link>
+                    <router-link :to="{ name: 'classes'}" v-if="this.hasAuth('ROLE_ADMIN')">Admin Panel</router-link>
                     <router-link :to="{ name: 'home'}" v-if="this.$store.getters.GET_TOKEN !== ''" @click="logout">Logout</router-link>
                 </div>
             </div>
@@ -42,6 +43,13 @@ export default {
         logout() {
             this.$store.commit("LOGOUT");
             this.accountText = 'Account';
+        },
+        hasAuth(role) {
+            const authorities = this.$store.getters.GET_USER.authorities;
+            if(authorities !== undefined){
+                return authorities.some(e => e.name === role);
+            }
+            return false;
         }
     },
     created() {
