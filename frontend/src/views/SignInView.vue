@@ -39,7 +39,7 @@ export default {
                 email: "",
                 password: "",
                 confirmPassword: "",
-                role: "ROLE_USER"
+                role: "ROLE_DEFAULT"
             },
             invalidCredentials: false,
             isUsernameTaken: false,
