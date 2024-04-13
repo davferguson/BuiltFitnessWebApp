@@ -1,6 +1,7 @@
 <template>
     <div>
-        <h3>Course Info</h3>
+        <h3>{{ course.course_name }}</h3>
+        <h4>${{ course.price }}</h4>
     </div>
 </template>
 

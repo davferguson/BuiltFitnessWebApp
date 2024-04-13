@@ -57,7 +57,7 @@ public class BuiltAppController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     @RequestMapping(value = "/courses", method = RequestMethod.GET)
     public List<Course> listCourses() {
-        s3Service.listBucketObjects("built-video-secured");
+//        s3Service.listBucketObjects("built-video-secured");
         return courseService.getAllCourses();
     }
     @ResponseStatus(HttpStatus.ACCEPTED)

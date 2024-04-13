@@ -7,18 +7,24 @@
       <video v-if="hasAccess" :key="videoSrc" class="video" ref="video" controls>
         <source :src="videoSrc" type="video/mp4">
       </video> -->
+      <CourseCard v-bind:course="course" v-for="course in allCourses" v-bind:key="course.course_id" />
     </div>
   </template>
   
   <script>
   // import ApiService from '@/services/ApiService';
+  import CourseService from '@/services/CourseService';
+  import CourseCard from '../components/course/CourseCard.vue';
   
   export default {
       name: 'OnlineProgramsView',
       components: {
+        CourseCard
       },
       data() {
         return {
+          allCourses: []
+          
           // videoSrc: '',
           // videoObj: 'fish.mp4',
           // hasAccess: true,
@@ -28,6 +34,10 @@
   
       },
       created() {
+        CourseService.getAllCourses().then(response => {
+          console.log(response.data);
+          this.allCourses = response.data;
+        })
           // ApiService.createSignedUrl(this.videoObj).then(response => {
           //     this.videoSrc = response.data;
           //     console.log(response.data);
