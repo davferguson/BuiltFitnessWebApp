@@ -1,21 +1,21 @@
 <template>
-    <div class="programs">
-      <br>
-      <h1>Online Programs Page</h1>
-      <!-- <h1>From Cloudfront</h1>
-      <h2 v-if="!hasAccess">You must be signed in to view this.</h2>
-      <video v-if="hasAccess" :key="videoSrc" class="video" ref="video" controls>
-        <source :src="videoSrc" type="video/mp4">
-      </video> -->
-      <CourseCard v-bind:course="course" v-for="course in allCourses" v-bind:key="course.course_id" />
-    </div>
-  </template>
+  <div class="programs">
+    <br>
+    <h1>Online Programs Page</h1>
+    <!-- <h1>From Cloudfront</h1>
+    <h2 v-if="!hasAccess">You must be signed in to view this.</h2>
+    <video v-if="hasAccess" :key="videoSrc" class="video" ref="video" controls>
+      <source :src="videoSrc" type="video/mp4">
+    </video> -->
+    <CourseCard v-bind:course="course" v-for="course in allCourses" v-bind:key="course.course_id" />
+  </div>
+</template>
   
-  <script>
+<script>
   // import ApiService from '@/services/ApiService';
   import CourseService from '@/services/CourseService';
   import CourseCard from '../components/course/CourseCard.vue';
-  
+
   export default {
       name: 'OnlineProgramsView',
       components: {
@@ -31,11 +31,10 @@
         }
       },
       methods: {
-  
+
       },
       created() {
         CourseService.getAllCourses().then(response => {
-          console.log(response.data);
           this.allCourses = response.data;
         })
           // ApiService.createSignedUrl(this.videoObj).then(response => {
@@ -61,4 +60,4 @@
           // });
       }
     };
-  </script>
+</script>

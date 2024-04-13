@@ -2,7 +2,7 @@
     <div class="background">
         <div class="container">
             <div class="nav-logo">
-                <router-link :to="{ name: 'home'}"><img src="../../public/images/built-logo.png"></router-link>
+                <router-link :to="{ name: 'home'}"><img src="/images/built-logo.png"></router-link>
             </div>
             <ul>
                 <li><router-link :to="{ name: 'home'}">Home</router-link></li>
