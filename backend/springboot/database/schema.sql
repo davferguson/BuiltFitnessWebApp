@@ -21,10 +21,10 @@ CREATE TABLE IF NOT EXISTS courses
     course_id SERIAL,
     course_name VARCHAR(50) NOT NULL,
     image_key VARCHAR(50) NOT NULL,
-    description VARCHAR[],
+    description VARCHAR(2000) NOT NULL,
     price DECIMAL NOT NULL,
     UNIQUE(course_name),
     CONSTRAINT pk_course PRIMARY KEY (course_id)
-)
+);
 
 COMMIT TRANSACTION;

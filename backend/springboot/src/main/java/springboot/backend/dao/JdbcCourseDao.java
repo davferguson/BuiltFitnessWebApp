@@ -7,6 +7,7 @@ import springboot.backend.model.Course;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class JdbcCourseDao implements CourseDao{
@@ -34,7 +35,7 @@ public class JdbcCourseDao implements CourseDao{
         course.setCourse_id(rs.getInt("course_id"));
         course.setCourse_name(rs.getString("course_name"));
         course.setImage_key(rs.getString("image_key"));
-//        course.setDescription(rs.get);
+        course.setDescription(Objects.requireNonNull(rs.getString("description")).split("\\|:\\|"));
         course.setPrice(rs.getBigDecimal("price"));
         return course;
     }
